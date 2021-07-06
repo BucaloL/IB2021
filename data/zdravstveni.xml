@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zdravstveniKarton naziv="ZDRAV KARTON">
+	<pacijent id= "1">
+		<email>pera@gmail.com</email>
+		<ime>Pera</ime>
+		<prezime>Peric</prezime>
+		<lozinka>abc123</lozinka>
+		<adresa>Adresa1</adresa>
+		<pregled>10-10-2020</pregled>
+		<lbo>123456789</lbo>		
+	</pacijent>
+	<pacijent id= "2">
+		<email>ana@gmail.com</email>
+		<ime>Ana</ime>
+		<prezime>Anic</prezime>
+		<lozinka>def456</lozinka>
+		<adresa>Adresa2</adresa>
+		<pregled>01-01-2021</pregled>
+		<lbo>987654321</lbo>		
+	</pacijent>
+	
+</zdravstveniKarton>
