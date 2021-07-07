@@ -1,38 +1,38 @@
 <mat-card class="card">
     <mat-card-content class="card-content">
-        <form class="form-content">
+        <form [formGroup]="contactForm" class="form-content" (ngSubmit)="onSubmit">
             <mat-form-field appearance="legacy">
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="Email">
+                <input matInput placeholder="Email" formControlName="email">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Password</mat-label>
-                <input matInput placeholder="Password">
+                <input matInput placeholder="Password" formControlName="password">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Ime</mat-label>
-                <input matInput placeholder="Ime">
+                <input matInput placeholder="Ime" formControlName="Ime">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Prezime</mat-label>
-                <input matInput placeholder="Prezime">
+                <input matInput placeholder="Prezime" formControlName="prezime">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Adresa</mat-label>
-                <input matInput placeholder="Adresa">
+                <input matInput placeholder="Adresa" formControlName="Adresa">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Lbo</mat-label>
-                <input matInput placeholder="Lbo">
+                <input matInput placeholder="Lbo" formControlName="lbo">
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="ok" class="button">OK</button>
-            <button mat-raised-button color="primary" type="backLogin" class="button">Nazad na prijavu</button>
+            <button mat-raised-button color="primary" type="submit" class="button">OK</button>
+            <button mat-raised-button color="primary" type="submit" class="button">Nazad na prijavu</button>
         </form>
     </mat-card-content>
 </mat-card>

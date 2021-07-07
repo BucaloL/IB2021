@@ -1,14 +1,14 @@
 <mat-card class="card">
     <mat-card-content class="card-content">
-        <form class="form-content">
+        <form  [formGroup]="contactForm" class="form-content" (ngSubmit)="onSubmit">
             <mat-form-field appearance="legacy">
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="Email">
+                <input matInput placeholder="Email" formControlName="email">
             </mat-form-field>
 
             <mat-form-field appearance="legacy">
                 <mat-label>Password</mat-label>
-                <input matInput placeholder="Password">
+                <input matInput placeholder="Password" formControlName="password">
             </mat-form-field>
 
             <button mat-raised-button color="primary" type="submit" class="button">Ok</button>

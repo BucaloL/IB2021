@@ -7,6 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecordsComponent implements OnInit {
 
+  displayedColumns: string[] = ['id', 'opis','datum', 'lekar', 'pacijent'];
+  records = [{
+    "id": "1",
+    "opis" : "opis pregleda" ,
+    "datum" : "05-05-2005" ,
+    "lekar" : "Tamara",
+    "pacijent" : "Ana",
+
+  }]
+
   constructor() { }
 
   ngOnInit(): void {
