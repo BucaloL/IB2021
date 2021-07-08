@@ -10,7 +10,7 @@ public class Korisnik {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String email;
 
     @Column
@@ -19,7 +19,7 @@ public class Korisnik {
     @Column
     private String prezime;
 
-    @Column(nullable = false)
+    @Column
     private String lozinka;
 
     @Enumerated(EnumType.STRING)
@@ -48,71 +48,62 @@ public class Korisnik {
         this.lbo = lbo;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }    
-
-    
-    public String getemail() {
-        return email;
-    }
-
-    public void setemail(String email) {
-        this.email = email;
-    }
-
-    public String getIme() {
-        return ime;
-    }
-
-    public void setIme(String ime) {
-        this.ime = ime;
-    }
-
-    public String getPrezime() {
-        return prezime;
-    }
-
-    public void setPrezime(String prezime) {
-        this.prezime = prezime;
-    }
-
-    public String getLozinka() {
-        return lozinka;
-    }
-
-    public void setLozinka(String lozinka) {
-        this.lozinka = lozinka;
-    }
-
-    public KorisnickaUloga getUloga() {
-        return uloga;
-    }
-
-    public void setUloga(KorisnickaUloga uloga) {
-        this.uloga = uloga;
-    }
-    
-    public String getAdresa() {
-        return adresa;
-    }
-
-    public void setAdresa(String adresa) {
-        this.adresa = adresa;
-    }
     
     
-
-    public Integer getLbo() {
-		return lbo;
+	public Long getId() {
+		return id;
 	}
 
-	public void setLbo(Integer lbo) {
-		this.lbo = lbo;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getIme() {
+		return ime;
+	}
+
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
+
+	public String getPrezime() {
+		return prezime;
+	}
+
+	public void setPrezime(String prezime) {
+		this.prezime = prezime;
+	}
+
+	public String getLozinka() {
+		return lozinka;
+	}
+
+	public void setLozinka(String lozinka) {
+		this.lozinka = lozinka;
+	}
+
+	public KorisnickaUloga getUloga() {
+		return uloga;
+	}
+
+	public void setUloga(KorisnickaUloga uloga) {
+		this.uloga = uloga;
+	}
+
+	public String getAdresa() {
+		return adresa;
+	}
+
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
 	}
 
 	public Date getPregled() {
@@ -121,6 +112,14 @@ public class Korisnik {
 
 	public void setPregled(Date pregled) {
 		this.pregled = pregled;
+	}
+
+	public Integer getLbo() {
+		return lbo;
+	}
+
+	public void setLbo(Integer lbo) {
+		this.lbo = lbo;
 	}
 
 	@Override
@@ -138,11 +137,6 @@ public class Korisnik {
         } else if (!id.equals(other.id))
             return false;
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Korisnik [id=" + id + ", ime=" + ime + ", prezime=" + prezime + "]";
     }
 
 }

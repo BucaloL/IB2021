@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -52,20 +52,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.setAuthenticationManager(authenticationManagerBean());
 		return authenticationFilter;
 	}
+	
+	@Override
+	public void configure(WebSecurity web) {
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+	}
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.headers().cacheControl().disable();
+		
+		
 		httpSecurity
-				.cors().and()
-				.csrf().disable()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.csrf().disable()
+		.cors().disable()
+        .authorizeRequests()
+            .antMatchers("/**").permitAll();
 				
 
 		// Custom JWT based authentication
-		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
-				UsernamePasswordAuthenticationFilter.class);
+//		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
+//				UsernamePasswordAuthenticationFilter.class);
 	}
 
 }

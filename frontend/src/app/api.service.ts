@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ApiService {
 
-  config = 'http://localhost:808/api'
+  config = 'http://localhost:8080/api'
 
   constructor(private http: HttpClient) { }
 
