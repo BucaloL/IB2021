@@ -46,8 +46,8 @@ import org.xml.sax.SAXException;
 //Kriptovani tajni kljuc se stavlja kao KeyInfo kriptovanog elementa
 public class AsymmetricKeyEncryption {
 	private static final String IN_FILE = "./data/zdravstveni.xml";
-	private static final String OUT_FILE = "";
-	private static final String KEY_STORE_FILE = "";
+	private static final String OUT_FILE = "./data/zdravstveni-out.xml";
+	private static final String KEY_STORE_FILE = "./data/key.jks";
 
 	static {
 		// staticka inicijalizacija

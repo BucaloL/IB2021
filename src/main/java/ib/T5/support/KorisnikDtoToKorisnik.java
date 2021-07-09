@@ -33,7 +33,6 @@ public class KorisnikDtoToKorisnik implements Converter<KorisnikDTO, Korisnik> {
         }
 
         if(entity != null) {
-            //entity.setsetKorisnickoIme(korisnikDTO.getKorisnickoIme());
             entity.setEmail(korisnikDTO.getEmail());
             entity.setIme(korisnikDTO.getIme());
             entity.setPrezime(korisnikDTO.getPrezime());

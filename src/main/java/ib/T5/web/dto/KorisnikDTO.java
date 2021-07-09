@@ -5,7 +5,6 @@ import java.util.Date;
 public class KorisnikDTO {
 
     private Long id;
-    private String korisnickoIme;
     private String email;
     private String ime;
     private String prezime;
@@ -22,13 +21,6 @@ public class KorisnikDTO {
         this.id = id;
     }
 
-    public String getKorisnickoIme() {
-        return korisnickoIme;
-    }
-
-    public void setKorisnickoIme(String korisnickoIme) {
-        this.korisnickoIme = korisnickoIme;
-    }
 
     public String getEmail() {
         return email;

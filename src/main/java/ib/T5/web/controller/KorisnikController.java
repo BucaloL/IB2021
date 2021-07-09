@@ -92,9 +92,9 @@ public class KorisnikController {
 
     @PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<List<KorisnikDTO>> get(@RequestParam(defaultValue="0") int page){
-        Page<Korisnik> korisnici = korisnikService.findAll(page);
-        return new ResponseEntity<>(toKorisnikDto.convert(korisnici.getContent()), HttpStatus.OK);
+    public ResponseEntity<List<KorisnikDTO>> get(){
+        List<Korisnik> korisnici = korisnikService.findAll();
+        return new ResponseEntity<>(toKorisnikDto.convert(korisnici), HttpStatus.OK);
     }
 
 

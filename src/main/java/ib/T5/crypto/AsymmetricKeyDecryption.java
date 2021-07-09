@@ -41,8 +41,8 @@ import org.xml.sax.SAXException;
 public class AsymmetricKeyDecryption {
 
 	private static final String IN_FILE = "./data/zdravstveni.xml";
-	private static final String OUT_FILE = "";
-	private static final String KEY_STORE_FILE = "";
+	private static final String OUT_FILE = "./data/zdravstveni-out.xml";
+	private static final String KEY_STORE_FILE = "./data/key.jks";
 	
   static {
   	//staticka inicijalizacija
