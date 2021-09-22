@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ib.T5.model.Korisnik;
+import ib.T5.security.CustomUserDetailsService;
+import ib.T5.security.TokenUtil;
 import ib.T5.service.KorisnikService;
 import ib.T5.support.KorisnikDtoToKorisnik;
 import ib.T5.support.KorisnikToKorisnikDto;
 import ib.T5.web.dto.KorisnikDTO;
 import ib.T5.web.dto.KorisnikRegistracijaDTO;
+import ib.T5.web.dto.LoginDTO;
+import ib.T5.web.dto.LoginResponseDTO;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +50,9 @@ public class KorisnikController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @PostMapping
     public ResponseEntity<KorisnikDTO> create(@RequestBody @Validated KorisnikRegistracijaDTO dto){
@@ -63,8 +70,38 @@ public class KorisnikController {
 
         return new ResponseEntity<>(toKorisnikDto.convert(korisnikService.save(korisnik)), HttpStatus.CREATED);
     }
+    
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    
+    	TokenUtil tokenUtil = new TokenUtil();
+    	
+    	Korisnik korisnik = customUserDetailsService.findUserByEmail(loginDTO.getEmail());
+    	
+    	if(korisnik == null || !passwordEncoder.matches(loginDTO.getLozinka(),korisnik.getLozinka())) {
+    		return ResponseEntity.ok(HttpStatus.UNAUTHORIZED);
+    	}
+    	
+    	String token = tokenUtil.generateToken(korisnik.getEmail(), korisnik.getUloga().toString());
+    	LoginResponseDTO responseDTO =new LoginResponseDTO();
+    	responseDTO.setToken(token);
+    	return ResponseEntity.ok(responseDTO);
+    	}
+    
+    @PostMapping(path = "/register")
+    public ResponseEntity<?> register (@RequestBody KorisnikDTO korisnikDTO) {
+    	Korisnik korisnik = korisnikService.register(korisnikDTO);
+    	
+    	if(korisnik == null) {
+    		
+    		return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<> (korisnik, HttpStatus.OK);
+    }
 
-    @PreAuthorize("hasAnyRole('ROLE_PACIJENT', 'ROLE_ADMIN', 'ROLE_LEKAR','ROLE_MEDSESTRA')")
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PACIJENT', 'LEKAR', 'MEDSESTRA')")
+    //@PreAuthorize("hasAnyRole('ROLE_PACIJENT', 'ROLE_ADMIN', 'ROLE_LEKAR','ROLE_MEDSESTRA')")
     @PutMapping(value= "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KorisnikDTO> update(@PathVariable Long id, @RequestBody KorisnikDTO korisnikDTO){
 
@@ -77,7 +114,8 @@ public class KorisnikController {
         return new ResponseEntity<>(toKorisnikDto.convert(korisnikService.save(korisnik)),HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEDSESTRA', 'ROLE_ADMIN', 'ROLE_LEKAR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PACIJENT', 'LEKAR', 'MEDSESTRA')")
+    //@PreAuthorize("hasAnyRole('ROLE_MEDSESTRA', 'ROLE_ADMIN', 'ROLE_LEKAR')")
     @GetMapping("/{id}")
     public ResponseEntity<KorisnikDTO> get(@PathVariable Long id){
         Optional<Korisnik> korisnik = korisnikService.findOne(id);
@@ -90,7 +128,8 @@ public class KorisnikController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'LEKAR', 'MEDSESTRA')")
+    //@PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<KorisnikDTO>> get(){
         List<Korisnik> korisnici = korisnikService.findAll();

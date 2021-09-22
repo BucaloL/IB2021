@@ -1,9 +1,13 @@
 package ib.T5.security;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,9 +41,32 @@ public class CustomUserDetailsService implements UserDetailsService {
 		String password = user.get().getLozinka();
 		
 		builder.password(password);
-		builder.authorities(user.get().getUloga().toString());
+		String uloga = user.get().getUloga().toString();
+		builder.authorities(uloga);
 		
 		return builder.build();
 	}
-
+	
+	public Collection<? extends GrantedAuthority> getAuthoritiesFromUserDetails(UserDetails principle) {
+		List<Authority> authorities = new ArrayList<>();
+		
+		Optional<Korisnik> user = userRepository.findOneByEmail(principle.getUsername());
+		
+		if(!user.isPresent()) {
+			return authorities;
+		}
+		
+		Authority authority = new Authority();
+		authority.setName(user.get().getUloga().toString());
+		
+		authorities.add(authority);
+		
+		return authorities;
+		
+	
+	}
+	
+	public Korisnik findUserByEmail(String email) {
+		return userRepository.findOneByEmail(email).get();
+	}
 }

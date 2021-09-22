@@ -1,6 +1,7 @@
 package ib.T5.support;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -17,8 +18,21 @@ public class PregledToPregledDto {
 
 		pregledDTO.setId(pregled.getId());
 		pregledDTO.setOpis(pregled.getOpis());
-		pregledDTO.setDatum(pregled.getDatum().toString());
-        pregledDTO.setLekar(pregled.getLekar());
+		
+		if(pregled.getDatum() == null) {
+			pregledDTO.setDatum(new Date().toString());
+		}
+		else {
+			pregledDTO.setDatum(pregled.getDatum().toString());
+		}
+		
+		if(pregled.getLekar() != null) {
+			pregledDTO.setLekar(pregled.getLekar().getId());	
+		}
+		
+		if(pregled.getPacijent() != null) {
+			pregledDTO.setPacijent(pregled.getPacijent().getId());	
+		} 
 
         return pregledDTO;
     }

@@ -9,12 +9,12 @@ public class PregledDTO {
 	private Long id;
 	private String opis;
 	private String datum;
-	private Korisnik lekar;
-	private Korisnik pacijent;
+	private Long lekar;
+	private Long pacijent;
 	
 	public PregledDTO() {}
 	
-	public PregledDTO(Long id, String opis, String datum, Korisnik lekar, Korisnik pacijent) {
+	public PregledDTO(Long id, String opis, String datum, Long lekar, Long pacijent) {
 		super();
 		this.id = id;
 		this.opis = opis;
@@ -40,16 +40,16 @@ public class PregledDTO {
 	public void setDatum(String datum) {
 		this.datum = datum;
 	}
-	public Korisnik getLekar() {
+	public Long getLekar() {
 		return lekar;
 	}
-	public void setLekar(Korisnik lekar) {
+	public void setLekar(Long lekar) {
 		this.lekar = lekar;
 	}
-	public Korisnik getPacijent() {
+	public Long getPacijent() {
 		return pacijent;
 	}
-	public void setPacijent(Korisnik pacijent) {
+	public void setPacijent(Long pacijent) {
 		this.pacijent = pacijent;
 	}
 	

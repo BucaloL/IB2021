@@ -1,6 +1,7 @@
 package ib.T5.service;
 
 import ib.T5.model.Korisnik;
+import ib.T5.web.dto.KorisnikDTO;
 
 import org.springframework.data.domain.Page;
 
@@ -20,5 +21,9 @@ public interface KorisnikService {
     void delete(Long id);
 
     Optional<Korisnik> findbyIme(String ime);
+    
+    Optional<Korisnik> findUserByEmail (String email);
+    
+    Korisnik register(KorisnikDTO korisnikDTO);
 
 }

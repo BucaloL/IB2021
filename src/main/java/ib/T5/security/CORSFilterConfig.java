@@ -10,7 +10,7 @@ import java.io.IOException;
 @Component
 public class CORSFilterConfig implements Filter {
 
-    private static final String LOCALHOST4200 = "http://localhost:4200";
+    private static final String LOCALHOST4200 = "http://localhost:8080";
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {

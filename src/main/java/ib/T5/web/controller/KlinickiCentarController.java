@@ -49,7 +49,8 @@ public class KlinickiCentarController {
     private KlinickiCentarToKlinickiCentarDto toKlinickiCentarDto;
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value= "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KlinickiCentarDTO> update(@PathVariable Long id, @RequestBody KlinickiCentarDTO klinickiCentarDTO){
 
@@ -61,8 +62,19 @@ public class KlinickiCentarController {
 
         return new ResponseEntity<>(toKlinickiCentarDto.convert(klinickiCentarService.save(klinickiCentar)),HttpStatus.OK);
     }
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<KlinickiCentarDTO> create(@RequestBody KlinickiCentarDTO klinickiCentarDTO){
 
-    @PreAuthorize("hasRole('ADMIN')")
+        KlinickiCentar klinickiCentar= toKlinickiCentar.convert(klinickiCentarDTO);
+
+        return new ResponseEntity<>(toKlinickiCentarDto.convert(klinickiCentarService.save(klinickiCentar)),HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<KlinickiCentarDTO> get(@PathVariable Long id){
         Optional<KlinickiCentar> klinickiCentar= klinickiCentarService.findOne(id);

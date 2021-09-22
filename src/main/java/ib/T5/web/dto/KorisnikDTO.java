@@ -2,6 +2,8 @@ package ib.T5.web.dto;
 
 import java.util.Date;
 
+import ib.T5.model.KorisnickaUloga;
+
 public class KorisnikDTO {
 
     private Long id;
@@ -11,9 +13,29 @@ public class KorisnikDTO {
     private String adresa;
     private Date pregled;
     private String lbo;
+    private String lozinka;
+    private KorisnickaUloga korisnickaUloga;
+    
+    
+    
 
+    public KorisnickaUloga getKorisnickaUloga() {
+		return korisnickaUloga;
+	}
 
-    public Long getId() {
+	public void setKorisnickaUloga(KorisnickaUloga korisnickaUloga) {
+		this.korisnickaUloga = korisnickaUloga;
+	}
+
+	public String getLozinka() {
+		return lozinka;
+	}
+
+	public void setLozinka(String lozinka) {
+		this.lozinka = lozinka;
+	}
+
+	public Long getId() {
         return id;
     }
 

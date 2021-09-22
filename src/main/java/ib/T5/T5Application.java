@@ -8,7 +8,6 @@ import cryptoAESiRSA.AsymmetricEncription;
 import cryptoAESiRSA.SymmetricAES;
 
 @SpringBootApplication
-//@EnableJpaRepositories
 public class T5Application {
 
 	public static void main(String[] args) {

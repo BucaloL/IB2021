@@ -19,4 +19,6 @@ public interface KlinickiCentarService {
 	    void delete(Long id);
 
 	    Optional<KlinickiCentar> findbyNaziv(String naziv);
+	    
+	    
 }

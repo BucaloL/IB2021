@@ -32,64 +32,67 @@ import ib.T5.web.dto.ZdravstveniKartonDTO;
 @RestController
 @RequestMapping(value = "/api/zdravstveni-karton", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ZdravstveniKartonController {
+
+	@Autowired
+	private ZdravstveniKartonService zdravstveniKartonService;
+
+	@Autowired
+	private ZdravstveniKartonDtoToZdravstveniKarton toZdravstveniKarton;
+
+	@Autowired
+	private ZdravstveniKartonToZdravstveniKartonDto toZdravstveniKartonDto;
+
+	@Autowired
+	private PregledService pregledService;
+
 	
-	  @Autowired
-	    private ZdravstveniKartonService zdravstveniKartonService;
+	@PreAuthorize("hasAuthority('ADMIN', 'LEKAR', 'MEDSESTRA')")
+	//@PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN' )")
+	@GetMapping
+	public ResponseEntity<List<ZdravstveniKartonDTO>> get() {
 
-	    @Autowired
-	    private ZdravstveniKartonDtoToZdravstveniKarton toZdravstveniKarton;
+		List<ZdravstveniKarton> kartoni = zdravstveniKartonService.findAll();
+		return new ResponseEntity<>(toZdravstveniKartonDto.convert(kartoni), HttpStatus.OK);
+	}
 
-	    @Autowired
-	    private ZdravstveniKartonToZdravstveniKartonDto toZdravstveniKartonDto;
-	    
-	    @Autowired
-	    private PregledService pregledService;
+	@PreAuthorize("hasAuthority('LEKAR')")
+	//@PreAuthorize("hasRole('LEKAR')")
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ZdravstveniKartonDTO> update(@PathVariable Long id,
+			@RequestBody ZdravstveniKartonDTO zdravstveniKartonDTO) {
 
+		if (!id.equals(zdravstveniKartonDTO.getId())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
-	    @PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN' )")
-	    @GetMapping
-	    public ResponseEntity<List<ZdravstveniKartonDTO>> get(){
-	    	
-	        List<ZdravstveniKarton> kartoni = zdravstveniKartonService.findAll();
-	        return new ResponseEntity<>(toZdravstveniKartonDto.convert(kartoni), HttpStatus.OK);
-	    }
+		Optional<ZdravstveniKarton> zk = zdravstveniKartonService.findOne(id);
 
-	    @PreAuthorize("hasRole('LEKAR')")
-	    @PutMapping(value= "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<ZdravstveniKartonDTO> update(@PathVariable Long id, @RequestBody ZdravstveniKartonDTO zdravstveniKartonDTO){
+		if (!pregledService.isDoctorOfPatient(zk.get().getPacijent(), null)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 
-	        if(!id.equals(zdravstveniKartonDTO.getId())) {
-	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	        }
-	        
-	        Optional<ZdravstveniKarton> zk= zdravstveniKartonService.findOne(id);
-	        
-	        if(!pregledService.isDoctorOfPatient(zk.get().getPacijent(), null)) {
-	    		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-	    	}
+		ZdravstveniKarton zdravstveniKarton = toZdravstveniKarton.convert(zdravstveniKartonDTO);
 
-	        ZdravstveniKarton zdravstveniKarton= toZdravstveniKarton.convert(zdravstveniKartonDTO);
+		return new ResponseEntity<>(toZdravstveniKartonDto.convert(zdravstveniKartonService.save(zdravstveniKarton)),
+				HttpStatus.OK);
+	}
 
-	        return new ResponseEntity<>(toZdravstveniKartonDto.convert(zdravstveniKartonService.save(zdravstveniKarton)),HttpStatus.OK);
-	    }
+	@PreAuthorize("hasAuthority('ADMIN', 'LEKAR', 'MEDSESTRA', 'PACIJENT')")
+	//@PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN','ROLE_PACIJENT' )")
+	@GetMapping("/{id}")
+	public ResponseEntity<ZdravstveniKartonDTO> get(@PathVariable Long id) {
+		Optional<ZdravstveniKarton> zdravstveniKarton = zdravstveniKartonService.findOne(id);
 
-	    @PreAuthorize("hasAnyRole('ROLE_LEKAR', 'ROLE_MEDSESTRA','ROLE_ADMIN','ROLE_PACIJENT' )")
-	    @GetMapping("/{id}")
-	    public ResponseEntity<ZdravstveniKartonDTO> get(@PathVariable Long id){
-	        Optional<ZdravstveniKarton> zdravstveniKarton= zdravstveniKartonService.findOne(id);
+		if (zdravstveniKarton.isPresent()) {
 
-	        if(zdravstveniKarton.isPresent()) {
-	        	
-	        	if(!pregledService.isDoctorOfPatient(zdravstveniKarton.get().getPacijent(), null)) {
-		    		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		    	}
-	        	
-	            return new ResponseEntity<>(toZdravstveniKartonDto.convert(zdravstveniKarton.get()), HttpStatus.OK);
-	        }
-	        else {
-	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	        }
-	    }
+			if (!pregledService.isDoctorOfPatient(zdravstveniKarton.get().getPacijent(), null)) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
 
+			return new ResponseEntity<>(toZdravstveniKartonDto.convert(zdravstveniKarton.get()), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 
 }
